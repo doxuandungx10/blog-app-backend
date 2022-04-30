@@ -4,9 +4,12 @@ import gr1.demo.blogapp.dto.PostDto;
 import gr1.demo.blogapp.exception.PostNotFoundException;
 import gr1.demo.blogapp.model.Post;
 import gr1.demo.blogapp.repository.PostRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -19,13 +22,15 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    public void createPost(PostDto postDto) {
+    public ResponseEntity createPost(PostDto postDto) {
         Post post = new Post();
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
-        post.setUsername(postDto.getUsername());
+        CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        post.setUsername(principal.getUsername());
         post.setCreatedOn(Instant.now());
         postRepository.save(post);
+        return  ResponseEntity.ok(post);
     }
 
     public List<Post> showAllPost() {

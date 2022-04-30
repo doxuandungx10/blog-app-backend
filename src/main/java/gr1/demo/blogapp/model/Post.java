@@ -22,7 +22,6 @@ public class Post {
     private Long id;
 
     @Column(name = "title")
-    @NotBlank
     private String title;
 
     @Lob

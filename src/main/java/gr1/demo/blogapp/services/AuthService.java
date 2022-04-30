@@ -1,23 +1,22 @@
 package gr1.demo.blogapp.services;
 
+import gr1.demo.blogapp.dto.AuthenticationResponse;
 import gr1.demo.blogapp.dto.LoginRequest;
 import gr1.demo.blogapp.dto.RegisterRequest;
 import gr1.demo.blogapp.jwt.JwtProvider;
 import gr1.demo.blogapp.model.User;
 import gr1.demo.blogapp.repository.UserRepository;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class AuthService {
@@ -36,7 +35,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         userRepository.save(user);
     }
-    public String login(LoginRequest loginRequest){
+    public AuthenticationResponse login(LoginRequest loginRequest){
 
             String x = loginRequest.getPassword();
             // Xác thực thông tin người dùng Request lên
@@ -52,11 +51,11 @@ public class AuthService {
 
             // Trả về jwt cho người dùng.
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-            String username = loggedInUser.getName();
-        System.out.println(loggedInUser.getPrincipal());
-            String jwt = tokenProvider.generateToken((CustomUserDetails) loggedInUser.getPrincipal());
-            return username;
+            String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
+            AuthenticationResponse authenticationResponse = new AuthenticationResponse(jwt,loggedInUser.getName());
+            return authenticationResponse;
         }
+
 
 
 }

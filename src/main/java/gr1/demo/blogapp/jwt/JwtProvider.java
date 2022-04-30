@@ -1,20 +1,26 @@
 package gr1.demo.blogapp.jwt;
 
-import gr1.demo.blogapp.model.User;
+
 import gr1.demo.blogapp.services.CustomUserDetails;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.util.Date;
+
+import org.springframework.security.core.Authentication;
+
+
 
 
 @Service
 @Slf4j
 public class JwtProvider {
-    // Đoạn JWT_SECRET này là bí mật, chỉ có phía server biết
-    private final String JWT_SECRET = "a2mSecret";
+    private final String JWT_SECRET = "gr1_2022";
 
     //Thời gian có hiệu lực của chuỗi jwt
     private final long JWT_EXPIRATION = 604800000L;

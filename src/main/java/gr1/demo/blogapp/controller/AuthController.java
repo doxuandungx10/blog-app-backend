@@ -1,5 +1,6 @@
 package gr1.demo.blogapp.controller;
 
+import gr1.demo.blogapp.dto.AuthenticationResponse;
 import gr1.demo.blogapp.dto.LoginRequest;
 import gr1.demo.blogapp.dto.RegisterRequest;
 import gr1.demo.blogapp.services.AuthService;
@@ -24,7 +25,8 @@ public class AuthController {
 
     }
     @PostMapping(value = "/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
-        return authService.login(loginRequest);
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
+
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 }
