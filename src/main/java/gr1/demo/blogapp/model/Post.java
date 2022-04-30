@@ -1,5 +1,6 @@
 package gr1.demo.blogapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.time.Instant;
 @Entity
 @Table
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
