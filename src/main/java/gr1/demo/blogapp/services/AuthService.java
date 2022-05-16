@@ -6,6 +6,7 @@ import gr1.demo.blogapp.dto.RegisterRequest;
 import gr1.demo.blogapp.jwt.JwtProvider;
 import gr1.demo.blogapp.model.User;
 import gr1.demo.blogapp.repository.UserRepository;
+import gr1.demo.blogapp.validate.AccountValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,18 +28,30 @@ public class AuthService {
     @Autowired
     private JwtProvider tokenProvider;
     @Autowired
+    private AccountValidate accountValidate;
+    @Autowired
     private AuthenticationManager authenticationManager;
-    public void signup(RegisterRequest registerRequest){
+    public String signup(RegisterRequest registerRequest) throws Exception{
         User user = new User();
+        if(accountValidate.isValidPassword(registerRequest.getPassword())==false
+                &&!accountValidate.isValidUsername(registerRequest.getUsername())==false) {
+            throw new Exception("Username or password is not validated");
+        }else{
+            if(!userRepository.findByUserName(registerRequest.getUsername()).isEmpty()){
+                throw new Exception("Username is existed");
+            }
+        }
         user.setEmail(registerRequest.getEmail());
         user.setUserName(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         userRepository.save(user);
+        return "OK";
     }
-    public AuthenticationResponse login(LoginRequest loginRequest){
+    public AuthenticationResponse login(LoginRequest loginRequest) throws Exception{
 
             String x = loginRequest.getPassword();
             // Xác thực thông tin người dùng Request lên
+            if(userRepository.findByUserName(loginRequest.getUsername()).isEmpty()) throw new Exception("Username is not exist");
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getUsername(),

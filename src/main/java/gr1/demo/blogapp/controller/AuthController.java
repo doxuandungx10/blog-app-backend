@@ -11,21 +11,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 public class AuthController {
     @Autowired
     private AuthService authService;
 
     @PostMapping(value = "/signup")
-    public ResponseEntity singup(@RequestBody RegisterRequest registerRequest){
-        System.out.println(registerRequest.getEmail());
+    public String singup(@RequestBody RegisterRequest registerRequest) throws Exception {
         authService.signup(registerRequest);
-
-        return ResponseEntity.ok(HttpStatus.OK);
-
+        return "OK";
     }
     @PostMapping(value = "/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) throws Exception {
 
         return ResponseEntity.ok(authService.login(loginRequest));
     }
