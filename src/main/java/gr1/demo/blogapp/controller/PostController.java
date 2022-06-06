@@ -2,6 +2,10 @@ package gr1.demo.blogapp.controller;
 
 import gr1.demo.blogapp.dto.PostDto;
 import gr1.demo.blogapp.model.Post;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import gr1.demo.blogapp.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,12 +27,30 @@ public class PostController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Post>> showAllPost(){
-        return ResponseEntity.ok(postService.showAllPost());
+    public ResponseEntity<?> showAllPost(@RequestParam(name ="page",required = false,defaultValue = "0")Integer page,
+                                         @RequestParam(name ="size", required = false,defaultValue = "5") Integer size,
+                                         @RequestParam(name ="sort", required = false, defaultValue = "ASC") String sort){
+        Sort sortable = null;
+        if (sort.equals("ASC")) {
+            sortable = Sort.by("id").ascending();
+        }
+        if (sort.equals("DESC")) {
+            sortable = Sort.by("id").descending();
+        }
+        Pageable pageable = PageRequest.of(page,size,sortable);
+        return postService.showAllPost(pageable);
     }
 
     @GetMapping("/get/{id}")
     public  ResponseEntity<?> getSinglePost(@PathVariable @RequestBody Long id){
         return ResponseEntity.ok(postService.getSinglePost(id));
+    }
+    @GetMapping("/showPostByCatelogy/{catelogy}")
+    public ResponseEntity<?> getPostByCatelogy(@PathVariable @RequestBody String catelogy){
+        Sort sortable = null;
+        sortable = Sort.by("id").ascending();
+        Pageable pageable = PageRequest.of(0,5,sortable);
+
+        return ResponseEntity.ok(postService.getPostByCatelogy(catelogy,pageable));
     }
 }

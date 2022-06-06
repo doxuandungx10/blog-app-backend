@@ -29,6 +29,9 @@ public class Post {
     @NotEmpty
     private String content;
 
+    @Column(name = "catelogy")
+    private String catelogy;
+
     @Column(name = "createdOn")
     private Instant createdOn;
 
