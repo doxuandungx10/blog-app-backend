@@ -4,6 +4,7 @@ import gr1.demo.blogapp.dto.CommentDto;
 import gr1.demo.blogapp.model.Comment;
 import gr1.demo.blogapp.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,8 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public ResponseEntity<?> showAllComment(Long postId, Pageable pageable){
-        return (ResponseEntity<?>) commentRepository.findCommentByPostId(postId, pageable);
+    public Page<Comment> showAllComment(Long postId, Pageable pageable){
+        return commentRepository.findCommentByPostId(postId, pageable);
     }
 
     public Comment createComment(CommentDto commentDto) throws Exception{

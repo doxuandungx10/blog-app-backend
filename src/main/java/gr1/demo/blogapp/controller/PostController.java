@@ -29,7 +29,7 @@ public class PostController {
     @GetMapping("/all")
     public ResponseEntity<?> showAllPost(@RequestParam(name ="page",required = false,defaultValue = "0")Integer page,
                                          @RequestParam(name ="size", required = false,defaultValue = "5") Integer size,
-                                         @RequestParam(name ="sort", required = false, defaultValue = "ASC") String sort){
+                                         @RequestParam(name ="sort", required = false, defaultValue = "DESC") String sort){
         Sort sortable = null;
         if (sort.equals("ASC")) {
             sortable = Sort.by("id").ascending();
