@@ -1,5 +1,6 @@
 package gr1.demo.blogapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.time.Instant;
 @NoArgsConstructor
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "comment")
@@ -28,6 +29,9 @@ public class Comment {
     @NotBlank
     private String username;
 
-    @Column(name = "postId")
-    private Long postId;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "post_id",nullable=false)
+    private Post objPost;
 }

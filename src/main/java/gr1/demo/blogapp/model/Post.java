@@ -9,6 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,7 +20,7 @@ import java.time.Instant;
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "title")
@@ -29,8 +31,6 @@ public class Post {
     @NotEmpty
     private String content;
 
-    @Column(name = "catelogy")
-    private String catelogy;
 
     @Column(name = "createdOn")
     private Instant createdOn;
@@ -41,6 +41,15 @@ public class Post {
     @Column(name = "username")
     @NotBlank
     private String username;
+
+    @OneToMany(mappedBy = "objPost")
+    private List<Comment> listComment;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name ="post_has_tag",
+            joinColumns = @JoinColumn(name ="post_id"),
+            inverseJoinColumns= @JoinColumn(name ="tag_id"))
+    private List<Tag> listTag;
 
 
 }

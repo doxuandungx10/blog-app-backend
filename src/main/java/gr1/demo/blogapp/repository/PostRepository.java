@@ -8,9 +8,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PostRepository extends JpaRepository<Post,Long> {
     Page<Post> findAll(Pageable pageable);
     @Query(value = "select * from Post p where p.catelogy = ?1 ",nativeQuery = true)
     Page<Post> findPostByCatelogy(String catelogy, Pageable pageable);
+
+    Post findPostById(Long id);
+    @Override
+    List<Post> findAll();
 }

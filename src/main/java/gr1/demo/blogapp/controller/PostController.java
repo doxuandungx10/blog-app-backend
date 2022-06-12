@@ -25,7 +25,10 @@ public class PostController {
         postService.createPost(postDto);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
+    @GetMapping("/allPostNotPaging")
+    public ResponseEntity<?> showAllPostsNotPaging(){
+        return postService.showAllPostNotPaging();
+    }
     @GetMapping("/all")
     public ResponseEntity<?> showAllPost(@RequestParam(name ="page",required = false,defaultValue = "0")Integer page,
                                          @RequestParam(name ="size", required = false,defaultValue = "5") Integer size,

@@ -2,6 +2,7 @@ package gr1.demo.blogapp.controller;
 
 import gr1.demo.blogapp.dto.CommentDto;
 import gr1.demo.blogapp.model.Comment;
+import gr1.demo.blogapp.model.Post;
 import gr1.demo.blogapp.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

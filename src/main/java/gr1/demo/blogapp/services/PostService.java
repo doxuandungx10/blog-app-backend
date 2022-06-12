@@ -3,6 +3,7 @@ package gr1.demo.blogapp.services;
 import gr1.demo.blogapp.dto.PostDto;
 import gr1.demo.blogapp.exception.PostNotFoundException;
 import gr1.demo.blogapp.model.Post;
+import gr1.demo.blogapp.model.Tag;
 import gr1.demo.blogapp.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,9 +24,10 @@ public class PostService {
 
     public ResponseEntity createPost(PostDto postDto) {
         Post post = new Post();
+        post.setId(postRepository.count()+1);
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
-        post.setCatelogy(postDto.getCatelogy());
+        post.setListTag(postDto.getListTag());
         CustomUserDetails principal = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         post.setUsername(principal.getUsername());
         post.setCreatedOn(Instant.now());
@@ -34,6 +37,9 @@ public class PostService {
 
     public ResponseEntity<?> showAllPost(Pageable pageable) {
         return ResponseEntity.ok(postRepository.findAll(pageable));
+    }
+    public ResponseEntity<?> showAllPostNotPaging(){
+        return ResponseEntity.ok(postRepository.findAll());
     }
 
     public Post getSinglePost(Long id) {
