@@ -1,7 +1,9 @@
 package gr1.demo.blogapp.controller;
 
 import gr1.demo.blogapp.dto.PostDto;
+import gr1.demo.blogapp.dto.TagDto;
 import gr1.demo.blogapp.model.Post;
+import gr1.demo.blogapp.model.Tag;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.DataTruncation;
 import java.util.List;
 
 @RestController
@@ -48,12 +51,9 @@ public class PostController {
     public  ResponseEntity<?> getSinglePost(@PathVariable @RequestBody Long id){
         return ResponseEntity.ok(postService.getSinglePost(id));
     }
-    @GetMapping("/showPostByCatelogy/{catelogy}")
-    public ResponseEntity<?> getPostByCatelogy(@PathVariable @RequestBody String catelogy){
-        Sort sortable = null;
-        sortable = Sort.by("id").ascending();
-        Pageable pageable = PageRequest.of(0,5,sortable);
-
-        return ResponseEntity.ok(postService.getPostByCatelogy(catelogy,pageable));
+    @GetMapping("/getPostByTagName")
+    public  ResponseEntity<?> getPostByTagName(@RequestBody List<TagDto> tags){
+        return ResponseEntity.ok(postService.getPostByTag(tags));
     }
+
 }

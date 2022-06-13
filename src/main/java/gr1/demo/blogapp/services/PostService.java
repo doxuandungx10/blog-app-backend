@@ -1,10 +1,12 @@
 package gr1.demo.blogapp.services;
 
 import gr1.demo.blogapp.dto.PostDto;
+import gr1.demo.blogapp.dto.TagDto;
 import gr1.demo.blogapp.exception.PostNotFoundException;
 import gr1.demo.blogapp.model.Post;
 import gr1.demo.blogapp.model.Tag;
 import gr1.demo.blogapp.repository.PostRepository;
+import gr1.demo.blogapp.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PostService {
@@ -21,6 +24,8 @@ public class PostService {
     private AuthService authService;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     public ResponseEntity createPost(PostDto postDto) {
         Post post = new Post();
@@ -46,8 +51,16 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(()->new PostNotFoundException("For id: "+id));
         return post;
     }
-    public ResponseEntity<?> getPostByCatelogy(String catelogy,Pageable pageable){
-        return ResponseEntity.ok(postRepository.findPostByCatelogy(catelogy,pageable));
+    public List<List<Map<Post,Object>>> getPostByTag(List<TagDto> tags){
+        List<List<Map<Post,Object>>>postDtoList = new ArrayList<>();
+        int count = 0;
+        for (TagDto tag:tags)
+             {
+                 count++;
+                 postDtoList.add(tagRepository.findPostByTagName(tag.getTag_name()));
+                 if(count == 5) break;
+             }
+        return postDtoList;
     }
 }
 
