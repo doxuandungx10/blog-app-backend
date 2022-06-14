@@ -12,8 +12,7 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post,Long> {
     Page<Post> findAll(Pageable pageable);
-    @Query(value = "select * from Post p where p.catelogy = ?1 ",nativeQuery = true)
-
+    @Query(value = "select * from Post p where p.id = ?1 ",nativeQuery = true)
     Post findPostById(Long id);
 
     @Override
