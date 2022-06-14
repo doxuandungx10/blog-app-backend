@@ -52,7 +52,7 @@ public class PostController {
         return ResponseEntity.ok(postService.getSinglePost(id));
     }
     @GetMapping("/getPostByTagName")
-    public  ResponseEntity<?> getPostByTagName(@RequestBody List<TagDto> tags){
+    public  ResponseEntity<?> getPostByTagName(@RequestBody List<String> tags){
         return ResponseEntity.ok(postService.getPostByTag(tags));
     }
 
