@@ -60,6 +60,23 @@ public class PostController {
     public ResponseEntity<?> getPostByTag2(@PathVariable Long tag_id){
         return ResponseEntity.ok(postService.getPostByTag2(tag_id));
     }
+    @GetMapping("/findPostByTitle")
+    public ResponseEntity<?> findPostByTitle(@RequestParam(name ="page",required = false,defaultValue = "0")Integer page,
+                                             @RequestParam(name ="size", required = false,defaultValue = "5") Integer size,
+                                             @RequestParam(name ="sort", required = false, defaultValue = "DESC") String sort,
+                                             @RequestParam(name ="title", required = true, defaultValue = "DESC") String title
+                                             )
+    {
+        Sort sortable = null;
+        if (sort.equals("ASC")) {
+            sortable = Sort.by("id").ascending();
+        }
+        if (sort.equals("DESC")) {
+            sortable = Sort.by("id").descending();
+        }
+        Pageable pageable = PageRequest.of(page,size,sortable);
+        return ResponseEntity.ok(postService.findPostByTitle(pageable,"%"+title+"%"));
+    }
 
 
 }

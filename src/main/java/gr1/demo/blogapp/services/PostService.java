@@ -8,6 +8,7 @@ import gr1.demo.blogapp.model.Tag;
 import gr1.demo.blogapp.repository.PostRepository;
 import gr1.demo.blogapp.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,6 +64,9 @@ public class PostService {
     }
     public List<Map<Post,Object>> getPostByTag2(Long id){
         return postRepository.findPostByTag(id);
+    }
+    public ResponseEntity<?> findPostByTitle(Pageable pageable,String title){
+        return ResponseEntity.ok(postRepository.findPostByTitle(title,pageable));
     }
 }
 
