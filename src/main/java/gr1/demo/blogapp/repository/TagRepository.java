@@ -11,6 +11,6 @@ import java.util.Map;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
-    @Query(value = "select p.* from tag t,post p,post_has_tag pt where t.id =pt.tag_id and pt.post_id = p.id and t.name =?1 ",nativeQuery = true)
-   List<Map<Post,Object>> findPostByTagName(String tag_name);
+    @Query(value = "select p.* from tag t,post p,post_has_tag pt where t.id =pt.tag_id and pt.post_id = p.id and t.name =?1 and p.id not like ?2 ",nativeQuery = true)
+   List<Map<Post,Object>> findPostByTagName(String tag_name,Long post_id);
 }

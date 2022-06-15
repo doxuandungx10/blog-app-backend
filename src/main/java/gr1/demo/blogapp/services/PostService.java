@@ -51,17 +51,18 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(()->new PostNotFoundException("For id: "+id));
         return post;
     }
-    public List<List<Map<Post,Object>>> getPostByTag(List<String> tags){
-        List<List<Map<Post,Object>>>postDtoList = new ArrayList<>();
+    public List<List<Map<Post,Object>>> getPostByTag(List<Tag> tags,Long post_id) {
+        List<List<Map<Post, Object>>> postDtoList = new ArrayList<>();
         int count = 0;
-        for (String tag:tags)
-             {
-                 count++;
-                 postDtoList.add(tagRepository.findPostByTagName(tag));
-                 if(count == 5) break;
-             }
+        for (Tag tag : tags) {
+            count++;
+            postDtoList.add(tagRepository.findPostByTagName(tag.getName(),post_id));
+            if (count == 5) break;
+        }
         return postDtoList;
     }
-
+    public List<Map<Post,Object>> getPostByTag2(Long id){
+        return postRepository.findPostByTag(id);
+    }
 }
 
