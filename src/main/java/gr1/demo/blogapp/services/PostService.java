@@ -52,7 +52,7 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(()->new PostNotFoundException("For id: "+id));
         return post;
     }
-    public List<List<Map<Post,Object>>> getPostByTag(List<Tag> tags,Long post_id) {
+    public List<List<Map<Post,Object>>> getRelatedPost(List<Tag> tags,Long post_id) {
         List<List<Map<Post, Object>>> postDtoList = new ArrayList<>();
         int count = 0;
         for (Tag tag : tags) {
@@ -62,7 +62,7 @@ public class PostService {
         }
         return postDtoList;
     }
-    public List<Map<Post,Object>> getPostByTag2(Long id){
+    public List<Map<Post,Object>> getPostByTag(Long id){
         return postRepository.findPostByTag(id);
     }
     public ResponseEntity<?> findPostByTitle(Pageable pageable,String title){

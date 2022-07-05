@@ -51,20 +51,20 @@ public class PostController {
     public  ResponseEntity<?> getSinglePost(@PathVariable @RequestBody Long id){
         return ResponseEntity.ok(postService.getSinglePost(id));
     }
-    @GetMapping("/getPostByTag/{post_id}")
-    public  ResponseEntity<?> getPostByTag(@PathVariable Long post_id){
+    @GetMapping("/getRelatedPost/{post_id}")
+    public  ResponseEntity<?> getRelatedPost(@PathVariable Long post_id){
 
-        return ResponseEntity.ok(postService.getPostByTag(postService.getSinglePost(post_id).getListTag(),post_id));
+        return ResponseEntity.ok(postService.getRelatedPost(postService.getSinglePost(post_id).getListTag(),post_id));
     }
-    @GetMapping("/getPostByTag2/{tag_id}")
+    @GetMapping("/getPostByTag/{tag_id}")
     public ResponseEntity<?> getPostByTag2(@PathVariable Long tag_id){
-        return ResponseEntity.ok(postService.getPostByTag2(tag_id));
+        return ResponseEntity.ok(postService.getPostByTag(tag_id));
     }
     @GetMapping("/findPostByTitle")
     public ResponseEntity<?> findPostByTitle(@RequestParam(name ="page",required = false,defaultValue = "0")Integer page,
                                              @RequestParam(name ="size", required = false,defaultValue = "5") Integer size,
                                              @RequestParam(name ="sort", required = false, defaultValue = "DESC") String sort,
-                                             @RequestParam(name ="title", required = true, defaultValue = "DESC") String title
+                                             @RequestParam(name ="title", required = false, defaultValue = "DESC") String title
                                              )
     {
         Sort sortable = null;
